@@ -15,6 +15,7 @@ const startPieces = [
     pawn, pawn, pawn, pawn, pawn, pawn, pawn, pawn,
     rook, knight, bishop, queen, king, bishop, knight, rook
 ]
+
 function createBoard() {
     startPieces.forEach((startPieces, i) => {
         const square = document.createElement('div')
@@ -49,6 +50,7 @@ allSquares.forEach(square => {
 
 let startPostitionId
 let draggedElement
+
 function dragStart (e) {
     startPostitionId = e.target.parentNode.getAttribute('square-id')
     draggedElement = e.target
@@ -64,21 +66,20 @@ function dragDrop(e) {
     const taken = e.target.classList.contains('piece')
     const valid = checkIfValid(e.target)
     const opponentGo = playerGo === 'white' ? 'black' : 'white'
-
     const takenByOpponent = e.target.firstChild?.classList.contains(opponentGo)
+
     if (correctGo) {
         // must check this first
         if (takenByOpponent && valid) {
-            e.target.append(draggedElement)
+            e.target.parentNode.append(draggedElement)
             e.target.remove()
             changePlayer()
             return
         }
         // then check this
-        if (taken && takenByOpponent) {
+        if (taken && !takenByOpponent) {
             infoDisplay.textContent = "you can't go here!"
             setTimeout(() => infoDisplay.textContent = "", 2000)
-
             return
         }
         if (valid) {
@@ -90,13 +91,25 @@ function dragDrop(e) {
 }
 
 function checkIfValid(target) {
-    console.log(target)
     const targetId = Number(target.getAttribute('square-id')) || Number(target.parentNode.getAttribute('square-id'))
     const startId = Number(startPostitionId)
     const piece = draggedElement.id
     console.log('targetId', targetId)
     console.log('startId', startId)
     console.log('piece', piece)
+
+    switch (piece) {
+        case 'pawn':
+            const starterRow  = [8,9,10,11,12,13,14,15]
+            if (
+                starterRow.includes(startId) && startId + width * 2 === targetId ||
+                startId + width === targetId ||
+                startId + width - 1 === targetId && document.querySelector(`[square-id="${startId + width - 1}"]`).firstChild ||
+                startId + width + 1 === targetId && document.querySelector(`[square-id="${startId + width + 1}"]`).firstChild
+                ) {
+                return true
+            }
+    }
 }
 
 function changePlayer() {
@@ -112,12 +125,12 @@ function changePlayer() {
 }
 
 function reverseIds() {
-    const allSquares =  document.querySelectorAll(".square")
+    const allSquares = document.querySelectorAll(".square")
     allSquares.forEach((square, i) =>
-        square.setAttribute('square-id',(width * width -1) -i))
+        square.setAttribute('square-id', (width * width -1) -i))
 }
 
 function revertIds() {
-    const allSquares =  document.querySelectorAll(".square")
-    allSquares.forEach((square, i ) => square.setAttribute('square-id', i))
+    const allSquares = document.querySelectorAll(".square")
+    allSquares.forEach((square, i) => square.setAttribute('square-id', i))
 }
