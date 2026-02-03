@@ -1,18 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <title>Chess</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Chess</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="game-controls">
+            <div class="header-row">
+                <h1>Chess Game</h1>
+                <div class="theme-toggle">
+                    <input type="checkbox" id="dark-mode-toggle" />
+                    <label for="dark-mode-toggle" class="toggle-label">
+                        <span class="toggle-slider"></span>
+                        <span class="theme-icon sun">☀️</span>
+                        <span class="theme-icon moon">🌙</span>
+                    </label>
+                </div>
+            </div>
+            <div class="mode-selection">
+                <label>Game Mode:</label>
+                <select id="game-mode">
+                    <option value="human-vs-human">Human vs Human</option>
+                    <option value="human-vs-bot">Human vs Bot</option>
+                    <option value="bot-vs-bot">Bot vs Bot</option>
+                </select>
+                <div class="difficulty-selection" style="display: none">
+                    <label>Bot Difficulty:</label>
+                    <select id="bot-difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="medium">Medium</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+                <div class="game-buttons">
+                    <button id="new-game-btn">New Game</button>
+                    <button id="pause-btn" style="display: none">Pause</button>
+                    <button id="resume-btn" style="display: none">
+                        Resume
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <div id="gameboard"></div>
-    <p>It is <span id="player"></span>'s go.</p>
-    <p id="info-display"></p>
+        <div class="game-info">
+            <p>It is <span id="player">black</span>'s turn</p>
+        </div>
 
-    <script src="pieces.js"></script>
-    <script src="app.js"></script>
+        <div id="gameboard"></div>
 
-</body>
+        <div class="game-info">
+            <p id="info-display"></p>
+        </div>
+
+        <!-- Promotion Modal -->
+        <div id="promotion-modal" class="promotion-modal" style="display: none">
+            <h3>Choose promotion piece:</h3>
+            <div class="promotion-pieces">
+                <div class="promotion-piece" data-piece="queen">
+                    <div id="promotion-queen"></div>
+                </div>
+                <div class="promotion-piece" data-piece="rook">
+                    <div id="promotion-rook"></div>
+                </div>
+                <div class="promotion-piece" data-piece="bishop">
+                    <div id="promotion-bishop"></div>
+                </div>
+                <div class="promotion-piece" data-piece="knight">
+                    <div id="promotion-knight"></div>
+                </div>
+            </div>
+        </div>
+        <div
+            id="modal-overlay"
+            class="modal-overlay"
+            style="display: none"
+        ></div>
+
+        <script src="pieces.js"></script>
+        <script src="app.js"></script>
+    </body>
 </html>
