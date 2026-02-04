@@ -66,24 +66,40 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    min-height: 100vh;
+    height: 100vh;
+    max-height: 100vh;
     background-color: var(--bg-color);
     color: var(--text-primary);
-    padding: 2vh 10px 2vh 10px;
+    padding: 1vh 10px 1vh 10px;
     overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: hidden;
     box-sizing: border-box;
+}
+
+/* Container for all game elements to ensure proper viewport fitting */
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+    min-height: 100vh;
+    max-height: 100vh;
+    box-sizing: border-box;
+    gap: 4px;
 }
 
 .game-controls {
     text-align: center;
-    margin-bottom: 10px;
-    padding: 15px;
+    margin-bottom: 8px;
+    padding: 12px;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 10px;
+    border-radius: 8px;
     box-shadow: 0 2px 10px var(--shadow);
-    min-width: 300px;
+    width: 100%;
+    max-width: 600px;
     flex-shrink: 0;
 }
 
@@ -91,9 +107,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: nowrap;
+    gap: 15px;
 }
 
 .game-controls h1 {
@@ -168,27 +184,31 @@ body {
 }
 
 .mode-selection {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 8px 12px;
     align-items: center;
+    justify-items: center;
+    max-width: 100%;
 }
 
 .mode-selection label {
     font-weight: bold;
     color: var(--text-secondary);
-    font-size: 16px;
+    font-size: 14px;
+    white-space: nowrap;
 }
 
 .mode-selection select {
-    padding: 8px 15px;
+    padding: 6px 12px;
     border: 2px solid var(--border-color);
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 4px;
+    font-size: 14px;
     background: var(--card-bg);
     color: var(--text-primary);
     cursor: pointer;
-    min-width: 180px;
+    min-width: 140px;
 }
 
 .mode-selection select:focus {
@@ -197,30 +217,31 @@ body {
 }
 
 .difficulty-selection {
+    grid-column: 1 / -1;
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
+    justify-content: center;
 }
 
 .game-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .game-buttons button {
-    padding: 12px 20px;
+    padding: 8px 16px;
     background: var(--button-primary);
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 4px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: background 0.3s ease;
-    min-width: 100px;
+    min-width: 80px;
 }
 
 .game-buttons button:hover {
@@ -248,8 +269,8 @@ body {
 }
 
 #gameboard {
-    width: min(90vw, 90vh, 600px);
-    height: min(90vw, 90vh, 600px);
+    width: min(90vw, calc(100vh - 140px), 600px);
+    height: min(90vw, calc(100vh - 140px), 600px);
     max-width: 600px;
     max-height: 600px;
     min-width: 280px;
@@ -259,7 +280,7 @@ body {
     grid-template-rows: repeat(8, 1fr);
     border: 3px solid var(--border-color);
     box-shadow: 0 4px 8px var(--shadow-strong);
-    margin: 10px 0;
+    margin: 8px 0;
     flex-shrink: 0;
     aspect-ratio: 1 / 1;
 }
@@ -421,49 +442,66 @@ body {
 /* Mobile optimizations */
 @media (max-width: 768px) {
     body {
-        padding: 1vh 5px 2vh 5px;
+        padding: 0.3vh 5px 0.3vh 5px;
         justify-content: flex-start;
+        overflow-y: hidden;
+    }
+
+    .game-container {
+        height: 100vh;
+        justify-content: flex-start;
+        gap: 3px;
     }
 
     .game-controls {
-        min-width: auto;
-        width: 95%;
-        max-width: 400px;
-        padding: 12px;
-        margin-bottom: 8px;
+        width: 98%;
+        max-width: 500px;
+        padding: 8px;
+        margin-bottom: 6px;
     }
 
     .header-row {
-        flex-direction: column;
+        flex-wrap: wrap;
         gap: 8px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
+        justify-content: center;
+    }
+
+    .game-controls h1 {
+        font-size: 18px;
     }
 
     .mode-selection {
-        gap: 10px;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto auto;
+        gap: 6px 8px;
+    }
+
+    .mode-selection label {
+        font-size: 12px;
     }
 
     .mode-selection select {
-        min-width: 140px;
-        font-size: 14px;
-        padding: 8px 12px;
+        min-width: 120px;
+        font-size: 12px;
+        padding: 4px 8px;
     }
 
     .game-buttons {
-        gap: 8px;
+        gap: 6px;
     }
 
     .game-buttons button {
-        padding: 10px 16px;
-        font-size: 14px;
-        min-width: 80px;
+        padding: 6px 12px;
+        font-size: 12px;
+        min-width: 70px;
     }
 
     #gameboard {
-        width: min(95vw, calc(100vh - 200px), 500px);
-        height: min(95vw, calc(100vh - 200px), 500px);
+        width: min(95vw, calc(100vh - 120px), 500px);
+        height: min(95vw, calc(100vh - 120px), 500px);
         border-width: 2px;
-        margin: 8px 0;
+        margin: 6px 0;
         aspect-ratio: 1 / 1;
     }
 
@@ -488,46 +526,56 @@ body {
 /* Small mobile devices */
 @media (max-width: 480px) {
     body {
-        padding: 0.5vh 3px 1vh 3px;
+        padding: 0.1vh 3px 0.1vh 3px;
+    }
+
+    .game-container {
+        gap: 2px;
     }
 
     .game-controls {
-        padding: 10px;
-        width: 98%;
-        margin-bottom: 6px;
+        padding: 6px;
+        width: 99%;
+        margin-bottom: 4px;
     }
 
     .game-controls h1 {
-        font-size: 20px;
-        margin-bottom: 8px;
+        font-size: 16px;
+        margin-bottom: 6px;
     }
 
     .header-row {
-        margin-bottom: 8px;
+        margin-bottom: 6px;
+        gap: 6px;
     }
 
     .mode-selection {
-        flex-direction: column;
-        gap: 8px;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 4px 6px;
+    }
+
+    .mode-selection label {
+        font-size: 11px;
     }
 
     .mode-selection select {
-        min-width: 130px;
-        font-size: 13px;
-        padding: 6px 10px;
+        min-width: 100px;
+        font-size: 11px;
+        padding: 3px 6px;
     }
 
     .game-buttons button {
-        padding: 8px 12px;
-        font-size: 13px;
-        min-width: 70px;
+        padding: 5px 10px;
+        font-size: 11px;
+        min-width: 60px;
     }
 
     #gameboard {
-        width: min(98vw, calc(100vh - 180px), 400px);
-        height: min(98vw, calc(100vh - 180px), 400px);
+        width: min(98vw, calc(100vh - 100px), 400px);
+        height: min(98vw, calc(100vh - 100px), 400px);
         border-width: 2px;
-        margin: 5px 0;
+        margin: 3px 0;
         aspect-ratio: 1 / 1;
     }
 
@@ -578,50 +626,207 @@ body {
 /* Landscape mobile orientation */
 @media (max-width: 768px) and (orientation: landscape) {
     body {
-        padding: 1vh 5px;
+        padding: 0.2vh 5px;
         justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .game-container {
+        height: 100vh;
+        justify-content: center;
+        padding: 0;
     }
 
     #gameboard {
-        width: min(70vh, 95vw, 500px);
-        height: min(70vh, 95vw, 500px);
-        margin: 5px 0;
+        width: min(calc(100vh - 60px), 75vw, 400px);
+        height: min(calc(100vh - 60px), 75vw, 400px);
+        margin: 1px 0;
+        border-width: 1px;
     }
 
     .game-controls {
-        margin-bottom: 5px;
-        padding: 8px;
+        margin-bottom: 2px;
+        padding: 4px;
+        max-width: 95vw;
+        border-radius: 6px;
     }
 
     .header-row {
         flex-direction: row;
         justify-content: space-between;
+        margin-bottom: 3px;
+        gap: 10px;
+    }
+
+    .game-controls h1 {
+        font-size: 14px;
+        margin: 0;
     }
 
     .mode-selection {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 8px;
+        grid-template-columns: auto auto auto;
+        grid-template-rows: auto;
+        gap: 3px 6px;
+        font-size: 11px;
+    }
+
+    .mode-selection label {
+        font-size: 10px;
+    }
+
+    .mode-selection select {
+        font-size: 10px;
+        padding: 2px 4px;
+        min-width: 90px;
+    }
+
+    .game-buttons button {
+        font-size: 10px;
+        padding: 3px 8px;
+        min-width: 50px;
+    }
+
+    .difficulty-selection {
+        grid-column: 1 / -1;
+        gap: 4px;
     }
 
     .game-info {
-        margin: 2px 0;
-        font-size: 14px;
+        margin: 1px 0;
+        font-size: 10px;
+    }
+
+    .toggle-label {
+        width: 35px;
+        height: 18px;
+        border-radius: 9px;
+    }
+
+    .toggle-slider {
+        width: 14px;
+        height: 14px;
+        top: 2px;
+        left: 2px;
+    }
+
+    #dark-mode-toggle:checked + .toggle-label .toggle-slider {
+        transform: translateX(17px);
+    }
+
+    .theme-icon {
+        font-size: 8px;
+    }
+
+    .theme-icon.sun {
+        left: 4px;
+    }
+
+    .theme-icon.moon {
+        right: 4px;
+    }
+}
+
+/* Very short screens (landscape phones with small height) */
+@media (max-height: 500px) and (orientation: landscape) {
+    body {
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .game-container {
+        height: 100vh;
+        justify-content: center;
+        gap: 1px;
+    }
+
+    .game-controls {
+        padding: 3px;
+        margin-bottom: 1px;
+        border-radius: 4px;
+    }
+
+    .game-controls h1 {
+        font-size: 12px;
+        margin: 0;
+    }
+
+    .header-row {
+        margin-bottom: 2px;
+        gap: 5px;
+    }
+
+    .mode-selection {
+        grid-template-columns: auto auto auto;
+        gap: 2px 4px;
+    }
+
+    .mode-selection label {
+        font-size: 9px;
+    }
+
+    .mode-selection select {
+        font-size: 9px;
+        padding: 1px 3px;
+        min-width: 70px;
+    }
+
+    .game-buttons button {
+        font-size: 9px;
+        padding: 2px 6px;
+        min-width: 40px;
+    }
+
+    #gameboard {
+        width: min(calc(100vh - 40px), 70vw, 350px);
+        height: min(calc(100vh - 40px), 70vw, 350px);
+        margin: 0;
+        border-width: 1px;
+    }
+
+    .game-info {
+        margin: 0;
+        font-size: 9px;
+    }
+
+    .toggle-label {
+        width: 30px;
+        height: 15px;
+    }
+
+    .toggle-slider {
+        width: 11px;
+        height: 11px;
+        top: 2px;
+        left: 2px;
+    }
+
+    #dark-mode-toggle:checked + .toggle-label .toggle-slider {
+        transform: translateX(15px);
+    }
+
+    .theme-icon {
+        font-size: 7px;
     }
 }
 
 /* Large screens */
 @media (min-width: 1200px) {
+    body {
+        overflow-y: auto;
+        height: auto;
+        min-height: 100vh;
+        max-height: none;
+        padding: 3vh 15px;
+        justify-content: center;
+    }
+
     #gameboard {
         max-width: 800px;
         max-height: 800px;
         width: min(70vw, 70vh, 800px);
         height: min(70vw, 70vh, 800px);
-    }
-
-    body {
-        padding: 3vh 15px;
-        justify-content: center;
     }
 
     .game-controls {
