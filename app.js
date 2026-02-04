@@ -182,11 +182,36 @@ function setupEventListeners() {
     square.addEventListener("dragover", dragOver);
     square.addEventListener("drop", dragDrop);
     square.addEventListener("click", handleSquareClick);
+
+    // Prevent mobile scrolling and layout shifts
+    square.addEventListener("touchstart", preventLayoutShift, {
+      passive: false,
+    });
+    square.addEventListener("touchmove", preventLayoutShift, {
+      passive: false,
+    });
+    square.addEventListener("touchend", preventLayoutShift, { passive: false });
+
+    // Stabilize square position
+    square.style.position = "relative";
+    square.style.contain = "layout style";
   });
+}
+
+// Prevent layout shifts on mobile
+function preventLayoutShift(e) {
+  const square = e.currentTarget;
+  square.style.transform = "translateZ(0)";
+  square.style.backfaceVisibility = "hidden";
+  square.style.webkitBackfaceVisibility = "hidden";
 }
 
 function dragStart(e) {
   if (gameOver || botThinking || gamePaused) return;
+
+  // Prevent layout shifts during drag
+  e.target.style.willChange = "transform";
+  e.target.parentNode.style.transform = "translateZ(0)";
 
   const piece = e.target;
   const square = piece.parentNode;
@@ -212,10 +237,16 @@ function dragStart(e) {
 
   draggedElement = piece;
   clearHighlights();
+
+  // Stabilize the board during drag
+  gameBoard.style.contain = "layout style";
+  gameBoard.style.transform = "translateZ(0)";
 }
 
 function dragOver(e) {
   e.preventDefault();
+  // Prevent any layout shifts
+  e.currentTarget.style.transform = "translateZ(0)";
 }
 
 function dragDrop(e) {
