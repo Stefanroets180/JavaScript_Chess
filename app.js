@@ -97,6 +97,51 @@ function getIndex(row, col) {
   return row * 8 + col;
 }
 
+// Function to color a chess piece based on its position
+function colorPiece(square, position) {
+  const pathElement = square.querySelector("path");
+
+  if (pathElement) {
+    // Remove existing color classes
+    pathElement.classList.remove("black", "white");
+
+    // Add appropriate color class based on starting position
+    if (position <= 15) {
+      pathElement.classList.add("black");
+    } else if (position >= 48) {
+      pathElement.classList.add("white");
+    }
+  }
+}
+
+// Function to maintain piece color after moves
+function maintainPieceColor(piece, isBlackPiece) {
+  const pathElement = piece.querySelector("path");
+
+  if (pathElement) {
+    // Remove existing color classes
+    pathElement.classList.remove("black", "white");
+
+    // Add the correct color class
+    if (isBlackPiece) {
+      pathElement.classList.add("black");
+    } else {
+      pathElement.classList.add("white");
+    }
+  }
+}
+
+// Function to refresh all piece colors on the board
+function refreshAllPieceColors() {
+  for (let i = 0; i < 64; i++) {
+    const square = currentGame.board[i];
+    if (square && square.piece && square.element.firstChild) {
+      const isBlackPiece = square.color === "black";
+      maintainPieceColor(square.element.firstChild, isBlackPiece);
+    }
+  }
+}
+
 function isValidIndex(index) {
   return index >= 0 && index < 64;
 }
@@ -131,13 +176,7 @@ function createBoard() {
     // Set draggable and color pieces
     if (square.firstChild) {
       square.firstChild.setAttribute("draggable", true);
-
-      // Color the pieces based on position
-      if (i <= 15) {
-        square.firstChild.firstChild.classList.add("black");
-      } else if (i >= 48) {
-        square.firstChild.firstChild.classList.add("white");
-      }
+      colorPiece(square, i);
     }
 
     // Color the squares
@@ -450,9 +489,11 @@ function makeMove(fromId, toId) {
     currentGame.kings[movingPiece.color] = toId;
   }
 
-  // Setup new piece for dragging
+  // Setup new piece for dragging and maintain color
   if (toSquare.firstChild) {
     toSquare.firstChild.setAttribute("draggable", true);
+    // Ensure piece color is maintained after move
+    maintainPieceColor(toSquare.firstChild, movingPiece.color === "black");
   }
 
   // Check for pawn promotion
@@ -587,20 +628,24 @@ function hasAnyValidMoves(color) {
 
 function handlePawnPromotion(pawnPosition) {
   const color = currentGame.board[pawnPosition].color;
+  const isBlackPiece = color === "black";
 
   // Show promotion pieces in modal
-  document.getElementById("promotion-queen").innerHTML = queen
-    .replace('id="queen"', `id="promotion-queen-piece"`)
-    .replace('class="piece"', `class="piece ${color}"`);
-  document.getElementById("promotion-rook").innerHTML = rook
-    .replace('id="rook"', `id="promotion-rook-piece"`)
-    .replace('class="piece"', `class="piece ${color}"`);
-  document.getElementById("promotion-bishop").innerHTML = bishop
-    .replace('id="bishop"', `id="promotion-bishop-piece"`)
-    .replace('class="piece"', `class="piece ${color}"`);
-  document.getElementById("promotion-knight").innerHTML = knight
-    .replace('id="knight"', `id="promotion-knight-piece"`)
-    .replace('class="piece"', `class="piece ${color}"`);
+  const promotionQueen = document.getElementById("promotion-queen");
+  const promotionRook = document.getElementById("promotion-rook");
+  const promotionBishop = document.getElementById("promotion-bishop");
+  const promotionKnight = document.getElementById("promotion-knight");
+
+  promotionQueen.innerHTML = queen;
+  promotionRook.innerHTML = rook;
+  promotionBishop.innerHTML = bishop;
+  promotionKnight.innerHTML = knight;
+
+  // Color the promotion pieces
+  maintainPieceColor(promotionQueen.querySelector(".piece"), isBlackPiece);
+  maintainPieceColor(promotionRook.querySelector(".piece"), isBlackPiece);
+  maintainPieceColor(promotionBishop.querySelector(".piece"), isBlackPiece);
+  maintainPieceColor(promotionKnight.querySelector(".piece"), isBlackPiece);
 
   // Show modal
   promotionModal.style.display = "block";
@@ -648,6 +693,12 @@ function promotePawn(position, newPiece) {
   currentGame.board[position].element.firstChild.setAttribute(
     "draggable",
     true,
+  );
+
+  // Ensure promoted piece has correct color
+  maintainPieceColor(
+    currentGame.board[position].element.firstChild,
+    color === "black",
   );
 
   // Update game state
@@ -1020,6 +1071,8 @@ document.addEventListener("DOMContentLoaded", function () {
       document.documentElement.removeAttribute("data-theme");
       localStorage.setItem("chess-theme", "light");
     }
+    // Refresh piece colors when theme changes
+    refreshAllPieceColors();
   });
 
   // Initialize the game

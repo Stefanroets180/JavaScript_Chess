@@ -14,9 +14,9 @@
     --button-success-hover: #229954;
     --square-light: #f0d9b5;
     --square-dark: #b58863;
-    --piece-black: #2c2c2c;
+    --piece-black: #1a1a1a;
     --piece-white: #ffffff;
-    --piece-white-stroke: #2c2c2c;
+    --piece-white-stroke: #333333;
     --check-highlight: #ff4757;
     --valid-move: #4ecdc4;
     --shadow: rgba(0, 0, 0, 0.1);
@@ -40,9 +40,9 @@
     --button-success-hover: #229954;
     --square-light: #c8b089;
     --square-dark: #8b5a3c;
-    --piece-black: #1a1a1a;
-    --piece-white: #e0e0e0;
-    --piece-white-stroke: #404040;
+    --piece-black: #0a0a0a;
+    --piece-white: #f0f0f0;
+    --piece-white-stroke: #666666;
     --check-highlight: #ff6b6b;
     --valid-move: #4ecdc4;
     --shadow: rgba(0, 0, 0, 0.3);
@@ -366,14 +366,47 @@ body {
     background-color: var(--square-dark);
 }
 
-.black {
-    fill: var(--piece-black);
+/* Chess piece coloring - all possible selectors */
+.black,
+path.black,
+.piece path.black,
+.square .piece path.black,
+.square .piece svg path.black,
+#gameboard .square .piece path.black {
+    fill: var(--piece-black) !important;
+    stroke: none !important;
 }
 
-.white {
-    fill: var(--piece-white);
-    stroke: var(--piece-white-stroke);
-    stroke-width: 1;
+.white,
+path.white,
+.piece path.white,
+.square .piece path.white,
+.square .piece svg path.white,
+#gameboard .square .piece path.white {
+    fill: var(--piece-white) !important;
+    stroke: var(--piece-white-stroke) !important;
+    stroke-width: 1.5 !important;
+}
+
+/* Promotion modal piece coloring */
+.promotion-piece path.black,
+.promotion-modal .piece path.black {
+    fill: var(--piece-black) !important;
+    stroke: none !important;
+}
+
+.promotion-piece path.white,
+.promotion-modal .piece path.white {
+    fill: var(--piece-white) !important;
+    stroke: var(--piece-white-stroke) !important;
+    stroke-width: 1.5 !important;
+}
+
+/* Ensure SVG paths inherit colors properly */
+.piece svg path {
+    transition:
+        fill 0.3s ease,
+        stroke 0.3s ease;
 }
 
 .highlight {
