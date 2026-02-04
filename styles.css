@@ -65,12 +65,13 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+    justify-content: flex-start;
+    min-height: 100vh;
     background-color: var(--bg-color);
     color: var(--text-primary);
-    padding: 10vh 10px;
-    overflow: hidden;
+    padding: 2vh 10px 2vh 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
     box-sizing: border-box;
 }
 
@@ -247,19 +248,20 @@ body {
 }
 
 #gameboard {
-    width: min(80vmin, 60vh);
-    height: min(80vmin, 60vh);
+    width: min(90vw, 90vh, 600px);
+    height: min(90vw, 90vh, 600px);
     max-width: 600px;
     max-height: 600px;
-    min-width: 320px;
-    min-height: 320px;
+    min-width: 280px;
+    min-height: 280px;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     grid-template-rows: repeat(8, 1fr);
     border: 3px solid var(--border-color);
     box-shadow: 0 4px 8px var(--shadow-strong);
-    margin: 5px 0;
+    margin: 10px 0;
     flex-shrink: 0;
+    aspect-ratio: 1 / 1;
 }
 
 .square {
@@ -269,6 +271,8 @@ body {
     justify-content: center;
     cursor: pointer;
     transition: box-shadow 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .square svg {
@@ -290,6 +294,8 @@ body {
     align-items: center;
     justify-content: center;
     cursor: grab;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .piece:active {
@@ -389,6 +395,8 @@ body {
     justify-content: center;
     background: var(--square-light);
     transition: background 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .promotion-piece:hover {
@@ -413,15 +421,16 @@ body {
 /* Mobile optimizations */
 @media (max-width: 768px) {
     body {
-        padding: 8vh 5px;
-        height: 100vh;
+        padding: 1vh 5px 2vh 5px;
+        justify-content: flex-start;
     }
 
     .game-controls {
         min-width: auto;
         width: 95%;
-        padding: 10px;
-        margin-bottom: 5px;
+        max-width: 400px;
+        padding: 12px;
+        margin-bottom: 8px;
     }
 
     .header-row {
@@ -431,52 +440,61 @@ body {
     }
 
     .mode-selection {
-        gap: 8px;
+        gap: 10px;
     }
 
     .mode-selection select {
         min-width: 140px;
-        font-size: 13px;
-        padding: 6px 12px;
+        font-size: 14px;
+        padding: 8px 12px;
     }
 
     .game-buttons {
-        gap: 6px;
+        gap: 8px;
     }
 
     .game-buttons button {
-        padding: 8px 12px;
-        font-size: 13px;
-        min-width: 70px;
+        padding: 10px 16px;
+        font-size: 14px;
+        min-width: 80px;
     }
 
     #gameboard {
-        width: min(85vmin, 60vh);
-        height: min(85vmin, 60vh);
+        width: min(95vw, calc(100vh - 200px), 500px);
+        height: min(95vw, calc(100vh - 200px), 500px);
         border-width: 2px;
-        margin: 2px 0;
+        margin: 8px 0;
+        aspect-ratio: 1 / 1;
     }
 
     .game-info {
         font-size: 16px;
-        margin: 3px 0;
+        margin: 4px 0;
     }
 
     .promotion-piece {
-        width: 45px;
-        height: 45px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .square svg {
+        width: 75%;
+        height: 75%;
+        max-width: none;
+        max-height: none;
     }
 }
 
 /* Small mobile devices */
 @media (max-width: 480px) {
     body {
-        padding: 5vh 3px;
+        padding: 0.5vh 3px 1vh 3px;
     }
 
     .game-controls {
-        padding: 8px;
+        padding: 10px;
         width: 98%;
+        margin-bottom: 6px;
     }
 
     .game-controls h1 {
@@ -490,41 +508,43 @@ body {
 
     .mode-selection {
         flex-direction: column;
-        gap: 6px;
+        gap: 8px;
     }
 
     .mode-selection select {
         min-width: 130px;
-        font-size: 12px;
-        padding: 5px 8px;
+        font-size: 13px;
+        padding: 6px 10px;
     }
 
     .game-buttons button {
-        padding: 6px 10px;
-        font-size: 12px;
-        min-width: 65px;
+        padding: 8px 12px;
+        font-size: 13px;
+        min-width: 70px;
     }
 
     #gameboard {
-        width: min(85vmin, 55vh);
-        height: min(85vmin, 55vh);
+        width: min(98vw, calc(100vh - 180px), 400px);
+        height: min(98vw, calc(100vh - 180px), 400px);
         border-width: 2px;
-        margin: 1px 0;
+        margin: 5px 0;
+        aspect-ratio: 1 / 1;
     }
 
     .game-info {
         font-size: 14px;
-        margin: 2px 0;
+        margin: 3px 0;
     }
 
     .promotion-modal {
-        padding: 12px;
+        padding: 15px;
         margin: 10px;
+        max-width: 90vw;
     }
 
     .promotion-piece {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
     }
 
     .toggle-label {
@@ -546,6 +566,48 @@ body {
     #dark-mode-toggle:checked + .toggle-label .toggle-slider {
         transform: translateX(23px);
     }
+
+    .square svg {
+        width: 80%;
+        height: 80%;
+        max-width: none;
+        max-height: none;
+    }
+}
+
+/* Landscape mobile orientation */
+@media (max-width: 768px) and (orientation: landscape) {
+    body {
+        padding: 1vh 5px;
+        justify-content: center;
+    }
+
+    #gameboard {
+        width: min(70vh, 95vw, 500px);
+        height: min(70vh, 95vw, 500px);
+        margin: 5px 0;
+    }
+
+    .game-controls {
+        margin-bottom: 5px;
+        padding: 8px;
+    }
+
+    .header-row {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .mode-selection {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .game-info {
+        margin: 2px 0;
+        font-size: 14px;
+    }
 }
 
 /* Large screens */
@@ -553,10 +615,13 @@ body {
     #gameboard {
         max-width: 800px;
         max-height: 800px;
+        width: min(70vw, 70vh, 800px);
+        height: min(70vw, 70vh, 800px);
     }
 
     body {
-        padding: 10vh 15px;
+        padding: 3vh 15px;
+        justify-content: center;
     }
 
     .game-controls {
@@ -599,6 +664,28 @@ select:focus,
 .toggle-label:focus-within {
     outline: 2px solid var(--button-primary);
     outline-offset: 2px;
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    .square:active {
+        background-color: rgba(78, 205, 196, 0.3) !important;
+    }
+
+    .piece:active {
+        transform: scale(1.05);
+        transition: transform 0.1s ease;
+    }
+
+    .promotion-piece:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+    }
+
+    button:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+    }
 }
 
 /* Loading animation for bot thinking */
