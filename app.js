@@ -119,18 +119,19 @@ function getPieceColors() {
 
 // Function to color a chess piece based on its position
 function colorPiece(square, position) {
+  const pieceElement = square.querySelector(".piece");
   const pathElement = square.querySelector("path");
 
-  if (pathElement) {
+  if (pieceElement && pathElement) {
     const colors = getPieceColors();
     
-    // Use setAttribute for maximum browser compatibility with SVG
+    // Set color on piece container for currentColor to work
     if (position <= 15) {
-      pathElement.setAttribute('fill', colors.black);
+      pieceElement.style.color = colors.black;
       pathElement.setAttribute('stroke', 'none');
       pathElement.removeAttribute('class');
     } else if (position >= 48) {
-      pathElement.setAttribute('fill', colors.white);
+      pieceElement.style.color = colors.white;
       pathElement.setAttribute('stroke', colors.whiteStroke);
       pathElement.setAttribute('stroke-width', '1.5');
       pathElement.removeAttribute('class');
@@ -142,16 +143,16 @@ function colorPiece(square, position) {
 function maintainPieceColor(piece, isBlackPiece) {
   const pathElement = piece.querySelector("path");
 
-  if (pathElement) {
+  if (piece && pathElement) {
     const colors = getPieceColors();
     
-    // Use setAttribute for maximum browser compatibility with SVG
+    // Set color on piece container for currentColor to work
     if (isBlackPiece) {
-      pathElement.setAttribute('fill', colors.black);
+      piece.style.color = colors.black;
       pathElement.setAttribute('stroke', 'none');
       pathElement.removeAttribute('class');
     } else {
-      pathElement.setAttribute('fill', colors.white);
+      piece.style.color = colors.white;
       pathElement.setAttribute('stroke', colors.whiteStroke);
       pathElement.setAttribute('stroke-width', '1.5');
       pathElement.removeAttribute('class');

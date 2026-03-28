@@ -361,6 +361,7 @@ svg path {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
+    color: #000000; /* Default color for currentColor in SVG */
 }
 
 .piece:active {
