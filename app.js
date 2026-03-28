@@ -102,14 +102,14 @@ function colorPiece(square, position) {
   const pathElement = square.querySelector("path");
 
   if (pathElement) {
-    // Remove existing color classes
-    pathElement.classList.remove("black", "white");
-
-    // Add appropriate color class based on starting position
+    // Apply inline styles directly for better browser compatibility
     if (position <= 15) {
-      pathElement.classList.add("black");
+      pathElement.style.fill = "var(--piece-black)";
+      pathElement.style.stroke = "none";
     } else if (position >= 48) {
-      pathElement.classList.add("white");
+      pathElement.style.fill = "var(--piece-white)";
+      pathElement.style.stroke = "var(--piece-white-stroke)";
+      pathElement.style.strokeWidth = "1.5";
     }
   }
 }
@@ -119,14 +119,14 @@ function maintainPieceColor(piece, isBlackPiece) {
   const pathElement = piece.querySelector("path");
 
   if (pathElement) {
-    // Remove existing color classes
-    pathElement.classList.remove("black", "white");
-
-    // Add the correct color class
+    // Apply inline styles directly for better browser compatibility
     if (isBlackPiece) {
-      pathElement.classList.add("black");
+      pathElement.style.fill = "var(--piece-black)";
+      pathElement.style.stroke = "none";
     } else {
-      pathElement.classList.add("white");
+      pathElement.style.fill = "var(--piece-white)";
+      pathElement.style.stroke = "var(--piece-white-stroke)";
+      pathElement.style.strokeWidth = "1.5";
     }
   }
 }
