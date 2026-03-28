@@ -97,21 +97,24 @@ function getIndex(row, col) {
   return row * 8 + col;
 }
 
-// Function to get computed CSS variable value with fallback
-function getCSSVariable(varName) {
-  const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+// Function to get piece colors - using hardcoded values to avoid mobile Brave dark mode issues
+function getPieceColors() {
+  // Check if dark theme is active
+  const isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
   
-  // Fallback to hardcoded values if CSS variable fails (mobile Brave issue)
-  if (!value || value === '') {
-    const fallbacks = {
-      '--piece-black': '#1a1a1a',
-      '--piece-white': '#ffffff',
-      '--piece-white-stroke': '#333333'
+  if (isDarkTheme) {
+    return {
+      black: '#0a0a0a',
+      white: '#f0f0f0',
+      whiteStroke: '#666666'
     };
-    return fallbacks[varName] || '';
+  } else {
+    return {
+      black: '#1a1a1a',
+      white: '#ffffff',
+      whiteStroke: '#333333'
+    };
   }
-  
-  return value;
 }
 
 // Function to color a chess piece based on its position
@@ -119,17 +122,16 @@ function colorPiece(square, position) {
   const pathElement = square.querySelector("path");
 
   if (pathElement) {
+    const colors = getPieceColors();
+    
     // Use setAttribute for maximum browser compatibility with SVG
     if (position <= 15) {
-      const blackColor = getCSSVariable('--piece-black') || '#1a1a1a';
-      pathElement.setAttribute('fill', blackColor);
+      pathElement.setAttribute('fill', colors.black);
       pathElement.setAttribute('stroke', 'none');
       pathElement.removeAttribute('class');
     } else if (position >= 48) {
-      const whiteColor = getCSSVariable('--piece-white') || '#ffffff';
-      const strokeColor = getCSSVariable('--piece-white-stroke') || '#333333';
-      pathElement.setAttribute('fill', whiteColor);
-      pathElement.setAttribute('stroke', strokeColor);
+      pathElement.setAttribute('fill', colors.white);
+      pathElement.setAttribute('stroke', colors.whiteStroke);
       pathElement.setAttribute('stroke-width', '1.5');
       pathElement.removeAttribute('class');
     }
@@ -141,17 +143,16 @@ function maintainPieceColor(piece, isBlackPiece) {
   const pathElement = piece.querySelector("path");
 
   if (pathElement) {
+    const colors = getPieceColors();
+    
     // Use setAttribute for maximum browser compatibility with SVG
     if (isBlackPiece) {
-      const blackColor = getCSSVariable('--piece-black') || '#1a1a1a';
-      pathElement.setAttribute('fill', blackColor);
+      pathElement.setAttribute('fill', colors.black);
       pathElement.setAttribute('stroke', 'none');
       pathElement.removeAttribute('class');
     } else {
-      const whiteColor = getCSSVariable('--piece-white') || '#ffffff';
-      const strokeColor = getCSSVariable('--piece-white-stroke') || '#333333';
-      pathElement.setAttribute('fill', whiteColor);
-      pathElement.setAttribute('stroke', strokeColor);
+      pathElement.setAttribute('fill', colors.white);
+      pathElement.setAttribute('stroke', colors.whiteStroke);
       pathElement.setAttribute('stroke-width', '1.5');
       pathElement.removeAttribute('class');
     }
