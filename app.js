@@ -97,19 +97,27 @@ function getIndex(row, col) {
   return row * 8 + col;
 }
 
+// Function to get computed CSS variable value
+function getCSSVariable(varName) {
+  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+}
+
 // Function to color a chess piece based on its position
 function colorPiece(square, position) {
   const pathElement = square.querySelector("path");
 
   if (pathElement) {
-    // Apply inline styles directly for better browser compatibility
+    // Use setAttribute for maximum browser compatibility with SVG
     if (position <= 15) {
-      pathElement.style.fill = "var(--piece-black)";
-      pathElement.style.stroke = "none";
+      const blackColor = getCSSVariable('--piece-black');
+      pathElement.setAttribute('fill', blackColor);
+      pathElement.setAttribute('stroke', 'none');
     } else if (position >= 48) {
-      pathElement.style.fill = "var(--piece-white)";
-      pathElement.style.stroke = "var(--piece-white-stroke)";
-      pathElement.style.strokeWidth = "1.5";
+      const whiteColor = getCSSVariable('--piece-white');
+      const strokeColor = getCSSVariable('--piece-white-stroke');
+      pathElement.setAttribute('fill', whiteColor);
+      pathElement.setAttribute('stroke', strokeColor);
+      pathElement.setAttribute('stroke-width', '1.5');
     }
   }
 }
@@ -119,14 +127,17 @@ function maintainPieceColor(piece, isBlackPiece) {
   const pathElement = piece.querySelector("path");
 
   if (pathElement) {
-    // Apply inline styles directly for better browser compatibility
+    // Use setAttribute for maximum browser compatibility with SVG
     if (isBlackPiece) {
-      pathElement.style.fill = "var(--piece-black)";
-      pathElement.style.stroke = "none";
+      const blackColor = getCSSVariable('--piece-black');
+      pathElement.setAttribute('fill', blackColor);
+      pathElement.setAttribute('stroke', 'none');
     } else {
-      pathElement.style.fill = "var(--piece-white)";
-      pathElement.style.stroke = "var(--piece-white-stroke)";
-      pathElement.style.strokeWidth = "1.5";
+      const whiteColor = getCSSVariable('--piece-white');
+      const strokeColor = getCSSVariable('--piece-white-stroke');
+      pathElement.setAttribute('fill', whiteColor);
+      pathElement.setAttribute('stroke', strokeColor);
+      pathElement.setAttribute('stroke-width', '1.5');
     }
   }
 }
