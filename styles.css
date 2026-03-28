@@ -366,48 +366,7 @@ body {
     background-color: var(--square-dark);
 }
 
-/* Chess piece coloring - all possible selectors */
-.black,
-path.black,
-.piece path.black,
-.square .piece path.black,
-.square .piece svg path.black,
-#gameboard .square .piece path.black {
-    fill: var(--piece-black) !important;
-    stroke: none !important;
-}
-
-.white,
-path.white,
-.piece path.white,
-.square .piece path.white,
-.square .piece svg path.white,
-#gameboard .square .piece path.white {
-    fill: var(--piece-white) !important;
-    stroke: var(--piece-white-stroke) !important;
-    stroke-width: 1.5 !important;
-}
-
-/* Promotion modal piece coloring */
-.promotion-piece path.black,
-.promotion-modal .piece path.black {
-    fill: var(--piece-black) !important;
-    stroke: none !important;
-}
-
-.promotion-piece path.white,
-.promotion-modal .piece path.white {
-    fill: var(--piece-white) !important;
-    stroke: var(--piece-white-stroke) !important;
-    stroke-width: 1.5 !important;
-}
-
-/* Ensure SVG paths inherit colors properly */
-.piece svg path {
-    transition:
-        fill 0.3s ease,
-        stroke 0.3s ease;
-}
+/* Chess piece coloring is now handled via JavaScript setAttribute for better browser compatibility */
 
 .highlight {
     box-shadow: inset 0 0 0 3px #ff6b6b;

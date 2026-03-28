@@ -97,9 +97,21 @@ function getIndex(row, col) {
   return row * 8 + col;
 }
 
-// Function to get computed CSS variable value
+// Function to get computed CSS variable value with fallback
 function getCSSVariable(varName) {
-  return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+  
+  // Fallback to hardcoded values if CSS variable fails (mobile Brave issue)
+  if (!value || value === '') {
+    const fallbacks = {
+      '--piece-black': '#1a1a1a',
+      '--piece-white': '#ffffff',
+      '--piece-white-stroke': '#333333'
+    };
+    return fallbacks[varName] || '';
+  }
+  
+  return value;
 }
 
 // Function to color a chess piece based on its position
@@ -109,15 +121,17 @@ function colorPiece(square, position) {
   if (pathElement) {
     // Use setAttribute for maximum browser compatibility with SVG
     if (position <= 15) {
-      const blackColor = getCSSVariable('--piece-black');
+      const blackColor = getCSSVariable('--piece-black') || '#1a1a1a';
       pathElement.setAttribute('fill', blackColor);
       pathElement.setAttribute('stroke', 'none');
+      pathElement.removeAttribute('class');
     } else if (position >= 48) {
-      const whiteColor = getCSSVariable('--piece-white');
-      const strokeColor = getCSSVariable('--piece-white-stroke');
+      const whiteColor = getCSSVariable('--piece-white') || '#ffffff';
+      const strokeColor = getCSSVariable('--piece-white-stroke') || '#333333';
       pathElement.setAttribute('fill', whiteColor);
       pathElement.setAttribute('stroke', strokeColor);
       pathElement.setAttribute('stroke-width', '1.5');
+      pathElement.removeAttribute('class');
     }
   }
 }
@@ -129,15 +143,17 @@ function maintainPieceColor(piece, isBlackPiece) {
   if (pathElement) {
     // Use setAttribute for maximum browser compatibility with SVG
     if (isBlackPiece) {
-      const blackColor = getCSSVariable('--piece-black');
+      const blackColor = getCSSVariable('--piece-black') || '#1a1a1a';
       pathElement.setAttribute('fill', blackColor);
       pathElement.setAttribute('stroke', 'none');
+      pathElement.removeAttribute('class');
     } else {
-      const whiteColor = getCSSVariable('--piece-white');
-      const strokeColor = getCSSVariable('--piece-white-stroke');
+      const whiteColor = getCSSVariable('--piece-white') || '#ffffff';
+      const strokeColor = getCSSVariable('--piece-white-stroke') || '#333333';
       pathElement.setAttribute('fill', whiteColor);
       pathElement.setAttribute('stroke', strokeColor);
       pathElement.setAttribute('stroke-width', '1.5');
+      pathElement.removeAttribute('class');
     }
   }
 }
@@ -1088,4 +1104,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Initialize the game
   initializeGame();
+  
+  // Force color refresh after a short delay for mobile Brave compatibility
+  setTimeout(() => {
+    refreshAllPieceColors();
+  }, 100);
 });
